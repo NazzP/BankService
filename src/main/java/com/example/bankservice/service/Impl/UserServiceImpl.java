@@ -90,6 +90,8 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+
+
     @Override
     public String nameEnquiry(EnquiryRequest request) {
         if(!userRepository.existsByAccountNumber(request.getAccountNumber())){
@@ -98,4 +100,31 @@ public class UserServiceImpl implements UserService {
         User foundUser = userRepository.findByAccountNumber(request.getAccountNumber());
         return foundUser.getFirstName() + " " +foundUser.getLastName() + " " +foundUser.getMiddleName();
     }
+
+    @Override
+    public BankResponse creditAccount(CreditDebitRequest request) {
+        if (!userRepository.existsByAccountNumber(request.getAccountNumber())) {
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.ACCOUNT_NOT_EXISTS_CODE)
+                    .responseMessage(AccountUtils.ACCOUNT_NOT_EXISTS_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        }
+
+        User userToCredit = userRepository.findByAccountNumber(request.getAccountNumber());
+        userToCredit.setAccountBalance(userToCredit.getAccountBalance().add(request.getAmount()));
+        userRepository.save(userToCredit);
+
+        return BankResponse.builder()
+                .responseCode(AccountUtils.ACCOUNT_CREDITED_SUCCESSFULLY_CODE)
+                .responseMessage(AccountUtils.ACCOUNT_CREDITED_SUCCESSFULLY_MESSAGE)
+                .accountInfo(AccountInfo.builder()
+                        .AccountBalance(userToCredit.getAccountBalance())
+                        .AccountName(userToCredit.getFirstName() + " " +userToCredit.getLastName() + " " +userToCredit.getMiddleName())
+                        .AccountNumber(userToCredit.getAccountNumber())
+                        .build())
+                .build();
+
+    }
+
 }

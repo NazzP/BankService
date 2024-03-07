@@ -28,4 +28,9 @@ public class UserController {
     public String nameEnquiry(@RequestBody EnquiryRequest request){
         return userService.nameEnquiry(request);
     }
+
+    @PostMapping("/credit")
+    public BankResponse creditAccount(@RequestBody CreditDebitRequest request){
+        return userService.creditAccount(request);
+    }
 }
