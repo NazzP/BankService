@@ -10,6 +10,15 @@ public class AccountUtils {
     public static final String ACCOUNT_CREATION_SUCCESS_CODE = "002";
     public static final String ACCOUNT_CREATION_SUCCESS_MESSAGE = "Account was successfully created";
 
+    public static final String ACCOUNT_NOT_EXISTS_CODE = "003";
+    public static final String ACCOUNT_NOT_EXISTS_MESSAGE = "Account with provided number doesn't exist";
+
+    public static final String USER_FOUND_CODE = "004";
+    public static final String USER_FOUND_MESSAGE = "User account found";
+
+    public static final String ACCOUNT_CREDITED_SUCCESSFULLY_CODE = "005";
+    public static final String ACCOUNT_CREDITED_SUCCESSFULLY_MESSAGE = "Account was successfully credited";
+
     public static String generateAccountNumber(){
         Year currentYear = Year.now();
         int min = 100000;

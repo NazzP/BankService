@@ -1,9 +1,6 @@
 package com.example.bankservice.service.Impl;
 
-import com.example.bankservice.dto.AccountInfo;
-import com.example.bankservice.dto.BankResponse;
-import com.example.bankservice.dto.EmailDetails;
-import com.example.bankservice.dto.UserRequest;
+import com.example.bankservice.dto.*;
 import com.example.bankservice.model.User;
 import com.example.bankservice.repository.UserRepository;
 import com.example.bankservice.service.EmailService;
@@ -70,5 +67,35 @@ public class UserServiceImpl implements UserService {
                         .AccountNumber(savedUser.getAccountNumber())
                         .build())
                 .build();
+    }
+
+    @Override
+    public BankResponse balanceEquiry(EnquiryRequest request) {
+        if (!userRepository.existsByAccountNumber(request.getAccountNumber())) {
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.ACCOUNT_NOT_EXISTS_CODE)
+                    .responseMessage(AccountUtils.ACCOUNT_NOT_EXISTS_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        }
+        User foundUser = userRepository.findByAccountNumber(request.getAccountNumber());
+        return BankResponse.builder()
+                .responseCode(AccountUtils.USER_FOUND_CODE)
+                .responseMessage(AccountUtils.USER_FOUND_MESSAGE)
+                .accountInfo(AccountInfo.builder()
+                        .AccountBalance(foundUser.getAccountBalance())
+                        .AccountName(foundUser.getFirstName() + " " +foundUser.getLastName() + " " +foundUser.getMiddleName())
+                        .AccountNumber(foundUser.getAccountNumber())
+                        .build())
+                .build();
+    }
+
+    @Override
+    public String nameEnquiry(EnquiryRequest request) {
+        if(!userRepository.existsByAccountNumber(request.getAccountNumber())){
+            return AccountUtils.ACCOUNT_NOT_EXISTS_MESSAGE;
+        }
+        User foundUser = userRepository.findByAccountNumber(request.getAccountNumber());
+        return foundUser.getFirstName() + " " +foundUser.getLastName() + " " +foundUser.getMiddleName();
     }
 }
