@@ -7,7 +7,8 @@ import com.example.bankservice.dto.UserRequest;
 
 public interface UserService {
     BankResponse createAccount(UserRequest userRequest);
-    BankResponse balanceEquiry(EnquiryRequest request);
+    BankResponse balanceEnquiry(EnquiryRequest request);
     String nameEnquiry(EnquiryRequest request);
     BankResponse creditAccount(CreditDebitRequest request);
+    BankResponse debitAccount(CreditDebitRequest request);
 }

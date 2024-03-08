@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BankResponse balanceEquiry(EnquiryRequest request) {
+    public BankResponse balanceEnquiry(EnquiryRequest request) {
         if (!userRepository.existsByAccountNumber(request.getAccountNumber())) {
             return BankResponse.builder()
                     .responseCode(AccountUtils.ACCOUNT_NOT_EXISTS_CODE)
@@ -125,6 +125,39 @@ public class UserServiceImpl implements UserService {
                         .build())
                 .build();
 
+    }
+
+    @Override
+    public BankResponse debitAccount(CreditDebitRequest request) {
+        if (!userRepository.existsByAccountNumber(request.getAccountNumber())) {
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.ACCOUNT_NOT_EXISTS_CODE)
+                    .responseMessage(AccountUtils.ACCOUNT_NOT_EXISTS_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        }
+
+        User userToDebit = userRepository.findByAccountNumber(request.getAccountNumber());
+
+        if (userToDebit.getAccountBalance().compareTo(request.getAmount()) < 0){
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.INSUFFICIENT_ACCOUNT_BALANCE_CODE)
+                    .responseMessage(AccountUtils.INSUFFICIENT_ACCOUNT_BALANCE_MESSAGE)
+                    .accountInfo(null)
+                    .build();
+        } else {
+            userToDebit.setAccountBalance(userToDebit.getAccountBalance().subtract(request.getAmount()));
+            userRepository.save(userToDebit);
+            return BankResponse.builder()
+                    .responseCode(AccountUtils.ACCOUNT_DEBITED_CODE)
+                    .responseMessage(AccountUtils.ACCOUNT_DEBITED_MESSAGE)
+                    .accountInfo(AccountInfo.builder()
+                            .AccountBalance(userToDebit.getAccountBalance())
+                            .AccountName(userToDebit.getFirstName() + " " + userToDebit.getLastName() + " " +userToDebit.getMiddleName())
+                            .AccountNumber(userToDebit.getAccountNumber())
+                            .build())
+                    .build();
+        }
     }
 
 }
