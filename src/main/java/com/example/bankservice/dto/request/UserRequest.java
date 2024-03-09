@@ -1,4 +1,4 @@
-package com.example.bankservice.dto;
+package com.example.bankservice.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

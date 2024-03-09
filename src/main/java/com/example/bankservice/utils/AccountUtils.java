@@ -25,6 +25,12 @@ public class AccountUtils {
     public static final String ACCOUNT_DEBITED_CODE = "007";
     public static final String ACCOUNT_DEBITED_MESSAGE = "Account has been successfully debited";
 
+    public static final String DESTINATION_ACCOUNT_NOT_EXISTS_CODE = "008";
+    public static final String DESTINATION_ACCOUNT_NOT_EXISTS_MESSAGE = "Destination account with provided number doesn't exist";
+
+    public static final String TRANSFER_SUCCESSFUL_CODE = "009";
+    public static final String TRANSFER_SUCCESSFUL_MESSAGE = "Transfer has been successfully done";
+
     public static String generateAccountNumber(){
         Year currentYear = Year.now();
         int min = 100000;

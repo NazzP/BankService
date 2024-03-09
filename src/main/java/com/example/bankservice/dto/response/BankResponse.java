@@ -1,5 +1,6 @@
-package com.example.bankservice.dto;
+package com.example.bankservice.dto.response;
 
+import com.example.bankservice.dto.AccountInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

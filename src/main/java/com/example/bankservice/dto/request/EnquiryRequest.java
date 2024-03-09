@@ -1,17 +1,14 @@
-package com.example.bankservice.dto;
+package com.example.bankservice.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreditDebitRequest {
+public class EnquiryRequest {
     private String accountNumber;
-    private BigDecimal amount;
 }
