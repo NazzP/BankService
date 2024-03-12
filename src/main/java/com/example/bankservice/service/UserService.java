@@ -1,5 +1,6 @@
 package com.example.bankservice.service;
 
+import com.example.bankservice.dto.LoginDto;
 import com.example.bankservice.dto.request.TransferRequest;
 import com.example.bankservice.dto.response.BankResponse;
 import com.example.bankservice.dto.request.CreditDebitRequest;
@@ -13,4 +14,5 @@ public interface UserService {
     BankResponse creditAccount(CreditDebitRequest request);
     BankResponse debitAccount(CreditDebitRequest request);
     BankResponse transfer(TransferRequest request);
+    BankResponse login(LoginDto loginDto);
 }

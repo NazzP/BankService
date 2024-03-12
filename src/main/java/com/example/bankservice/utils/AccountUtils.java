@@ -31,6 +31,9 @@ public class AccountUtils {
     public static final String TRANSFER_SUCCESSFUL_CODE = "009";
     public static final String TRANSFER_SUCCESSFUL_MESSAGE = "Transfer has been successfully done";
 
+    public static final String LOGIN_SUCCESSFUL_CODE = "010";
+    public static final String LOGIN_SUCCESSFUL_MESSAGE = "You have successfully logged in";
+
     public static String generateAccountNumber(){
         Year currentYear = Year.now();
         int min = 100000;

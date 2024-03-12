@@ -1,6 +1,10 @@
 package com.example.bankservice.service.Impl;
 
-import com.example.bankservice.dto.*;
+import com.example.bankservice.config.jwt.JwtTokenProvider;
+import com.example.bankservice.dto.AccountInfo;
+import com.example.bankservice.dto.EmailDetails;
+import com.example.bankservice.dto.LoginDto;
+import com.example.bankservice.dto.TransactionDto;
 import com.example.bankservice.dto.request.CreditDebitRequest;
 import com.example.bankservice.dto.request.EnquiryRequest;
 import com.example.bankservice.dto.request.TransferRequest;
@@ -12,22 +16,26 @@ import com.example.bankservice.service.EmailService;
 import com.example.bankservice.service.TransactionService;
 import com.example.bankservice.service.UserService;
 import com.example.bankservice.utils.AccountUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserRepository userRepository;
+     UserRepository userRepository;
+     EmailService emailService;
+     TransactionService transactionService;
+     PasswordEncoder passwordEncoder;
+     AuthenticationManager authenticationManager;
+     JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    EmailService emailService;
-
-    @Autowired
-    TransactionService transactionService;
 
     @Override
     public BankResponse createAccount(UserRequest userRequest) {
@@ -49,6 +57,8 @@ public class UserServiceImpl implements UserService {
                 .stateOfOrigin(userRequest.getStateOfOrigin())
                 .accountNumber(AccountUtils.generateAccountNumber())
                 .accountBalance(BigDecimal.ZERO)
+                .role(userRequest.getRole())
+                .password(passwordEncoder.encode(userRequest.getPassword()))
                 .email(userRequest.getEmail())
                 .phoneNumber(userRequest.getPhoneNumber())
                 .status("ACTIVE")
@@ -263,6 +273,27 @@ public class UserServiceImpl implements UserService {
                 .accountInfo(null)
                 .build();
 
+    }
+
+    @Override
+    public BankResponse login(LoginDto loginDto){
+        Authentication authentication = null;
+        authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
+        );
+
+        EmailDetails loginAlert = EmailDetails.builder()
+                .subject("LOGIN ALERT")
+                .recipient(loginDto.getEmail())
+                .messageBody("You logged into your account\n" +
+                        "if you didn't initiate this request, please contact your bank")
+                .build();
+        emailService.sendEmailAlert(loginAlert);
+
+        return BankResponse.builder()
+                .responseCode(AccountUtils.LOGIN_SUCCESSFUL_CODE)
+                .responseMessage(jwtTokenProvider.generateToken(authentication))
+                .build();
     }
 
 }
