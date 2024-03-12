@@ -4,13 +4,13 @@ import com.example.bankservice.dto.TransactionDto;
 import com.example.bankservice.model.Transaction;
 import com.example.bankservice.repository.TransactionRepository;
 import com.example.bankservice.service.TransactionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
 
-    @Autowired
     private TransactionRepository transactionRepository;
 
     @Override
