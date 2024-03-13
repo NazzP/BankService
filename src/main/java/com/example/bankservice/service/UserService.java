@@ -6,6 +6,9 @@ import com.example.bankservice.dto.response.BankResponse;
 import com.example.bankservice.dto.request.CreditDebitRequest;
 import com.example.bankservice.dto.request.EnquiryRequest;
 import com.example.bankservice.dto.request.UserRequest;
+import com.example.bankservice.model.User;
+
+import java.util.List;
 
 public interface UserService {
     BankResponse createAccount(UserRequest userRequest);
@@ -15,4 +18,6 @@ public interface UserService {
     BankResponse debitAccount(CreditDebitRequest request);
     BankResponse transfer(TransferRequest request);
     BankResponse login(LoginDto loginDto);
+    User readById(long id);
+    BankResponse update(UserRequest userRequest);
 }
