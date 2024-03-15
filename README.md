@@ -29,7 +29,7 @@ ___
 + **sendEmailAlert**
 
 # Database
-![img.png](img.png)
+![image](https://github.com/NazzP/BankService/assets/123106736/94c6ad0c-02c6-4a70-93e5-1a32116adaab)
 
 # Swagger. REST APIs Documentation
-![img_1.png](img_1.png)
+![image](https://github.com/NazzP/BankService/assets/123106736/600a263b-c685-4811-ae6f-ac0541174f39)
